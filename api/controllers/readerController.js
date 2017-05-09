@@ -11,7 +11,7 @@ var readerController = {
             '-Dlog4j.configuration=file:logs/log4j.properties',
             '-Dhostname=' + readerIp,
             '-jar',
-            'scripts/impinjCtrl.jar'
+            'node_modules/impinjCtrl/out/impinjCtrl.jar'
         ];
 
         ps = childProcess.spawn('java', properties);

@@ -1,12 +1,13 @@
 {
-    "name": "beardude_race",
+    "name": "node-rfid-reader-controller",
     "private": false,
     "version": "0.0.0",
     "description": "Manage bicycle race events, participants, and timing",
     "keywords": [],
     "dependencies": {
         "express": "4.15.2",
-        "fstorm": "0.1.3"
+        "fstorm": "0.1.3",
+        "impinjCtrl": "azaitw/impinjCtrl"
     },
     "devDependencies": {
         "eslint": "*",
@@ -23,7 +24,7 @@
     "main": "app.js",
     "repository": {
         "type": "git",
-        "url": "git@bitbucket.org:azaitw/beardude_race.git"
+        "url": "git@github.com:azaitw/node-rfid-reader-controller.git"
     },
     "author": "azai",
     "license": ""
