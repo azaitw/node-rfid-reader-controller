@@ -1,0 +1,30 @@
+{
+    "name": "beardude_race",
+    "private": false,
+    "version": "0.0.0",
+    "description": "Manage bicycle race events, participants, and timing",
+    "keywords": [],
+    "dependencies": {
+        "express": "4.15.2",
+        "fstorm": "0.1.3"
+    },
+    "devDependencies": {
+        "eslint": "*",
+        "istanbul": "0.4.5",
+        "mocha": "3.0.2",
+        "sinon": "*"
+    },
+    "scripts": {
+        "debug": "node debug app.js",
+        "lint": "./node_modules/.bin/eslint --env browser --env node --ignore-path .eslintignore api/**/*.js config/**/*.js *.js",
+        "lint-report": "mkdir -p build;./node_modules/.bin/eslint --env browser --env node --ignore-path .eslintignore -f checkstyle -o build/checkstyle-result.xml api/**/*.js config/**/*.js *.js",
+        "start": "node app.js"
+    },
+    "main": "app.js",
+    "repository": {
+        "type": "git",
+        "url": "git@bitbucket.org:azaitw/beardude_race.git"
+    },
+    "author": "azai",
+    "license": ""
+}
