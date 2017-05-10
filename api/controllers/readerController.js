@@ -43,7 +43,7 @@ var readerController = {
                 }
             });
             ps.stderr.on('data', function (data) {
-                dataController.addError({
+                dataController.addMessage({
                     message: data.toString('utf-8')
                 });
             });
