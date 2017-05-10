@@ -19,7 +19,7 @@
     }
 */
 
-var fileContentObj;
+var dataObj;
 var fs = require('fs');
 var fstorm = require('fstorm');
 var returnTimeObj = function () {
@@ -37,7 +37,7 @@ var returnTimeObj = function () {
 };
 var stringify = require('fast-stable-stringify');
 var writer;
-var fileController = {
+var dataController = {
     init: function (callback) {
         var timeObj = returnTimeObj();
         var returnFilepath = function (callback) {
@@ -62,28 +62,28 @@ var fileController = {
             };
 
             writer = fstorm(filepath);
-            fileContentObj = {
+            dataObj = {
                 duration: startTime,
                 records: [],
                 errors: []
             };
-            fileController.writeFile(fileContentObj, callback);
+            dataController.writeFile(dataObj, callback);
         });
     },
     add: function (entry) {
-        fileContentObj.records.push(entry);
-        fileController.writeFile(fileContentObj);
+        dataObj.records.push(entry);
+        dataController.writeFile(dataObj);
     },
     end: function () {
-        fileContentObj.duration.end = returnTimeObj();
-        fileController.writeFile(fileContentObj);
+        dataObj.duration.end = returnTimeObj();
+        dataController.writeFile(dataObj);
     },
     addError: function (entry) {
         var err = entry;
 
         err.timestamp = returnTimeObj;
-        fileContentObj.errors.push(err);
-        fileController.writeFile(fileContentObj);
+        dataObj.errors.push(err);
+        dataController.writeFile(dataObj);
     },
     writeFile: function (obj, callback) {
         writer.write(stringify(obj), function (err) {
@@ -97,4 +97,4 @@ var fileController = {
     }
 };
 
-module.exports = fileController;
+module.exports = dataController;

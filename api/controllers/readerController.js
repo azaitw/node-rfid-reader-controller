@@ -3,7 +3,7 @@
 'use strict';
 
 var childProcess = require('child_process');
-var fileController = require('./fileController');
+var dataController = require('./dataController');
 var ps;
 var readerController = {
     start: function (res) {
@@ -16,16 +16,16 @@ var readerController = {
         ];
 
         ps = childProcess.spawn('java', properties);
-        fileController.init(function () {
+        dataController.init(function () {
             ps.stdout.on('data', function (data) {
                 var raw = data.toString('utf-8');
 
                 if (raw[0] === '{') {
-                    fileController.add(JSON.parse(raw));
+                    dataController.add(JSON.parse(raw));
                 }
             });
             ps.stderr.on('data', function (data) {
-                fileController.addError({
+                dataController.addError({
                     message: data.toString('utf-8').trim()
                 });
             });
@@ -40,7 +40,7 @@ var readerController = {
             ps.stdin.setEncoding('utf-8');
             ps.stdin.write('STOP\n');
             ps.stdin.end();
-            fileController.end();
+            dataController.end();
         }
         res.json({
             message: 'stopped'
