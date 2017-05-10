@@ -16,42 +16,48 @@ var readerController = {
             'node_modules/impinjCtrl/out/impinjCtrl.jar'
         ];
 
-        ps = childProcess.spawn('java', properties);
-        readerStarted = true;
-        dataController.init(function () {
-            ps.stdin.setEncoding('utf-8');
-            ps.stdin.write('STATUS\n');
-            ps.stdout.on('data', function (data) {
-                var raw = data.toString('utf-8');
-                var epcIndex = 5;
-                var func;
+        if (!readerStarted) {
+            readerStarted = true;
+            ps = childProcess.spawn('java', properties);
+            dataController.init(function () {
+                ps.stdin.setEncoding('utf-8');
+                ps.stdin.write('STATUS\n');
+                ps.stdout.on('data', function (data) {
+                    var raw = data.toString('utf-8');
+                    var epcIndex = 5;
+                    var func;
 
-                if (raw[0] === '{') {
-                    if (raw.substring(0, epcIndex) === '{"epc') {
-                        func = dataController.add;
-                    } else {
-                        func = dataController.addMessage;
+                    if (raw[0] === '{') {
+                        if (raw.substring(0, epcIndex) === '{"epc') {
+                            func = dataController.add;
+                        } else {
+                            func = dataController.addMessage;
+                        }
+                        try {
+                            func(JSON.parse(raw));
+                        } catch (e) {
+                            dataController.addMessage({
+                                message: 'JSON parse error',
+                                data: raw
+                            });
+                        }
                     }
-                    try {
-                        func(JSON.parse(raw));
-                    } catch (e) {
-                        dataController.addMessage({
-                            message: 'JSON parse error',
-                            data: raw
-                        });
-                    }
-                }
-            });
-            ps.stderr.on('data', function (data) {
-                dataController.addMessage({
-                    message: data.toString('utf-8')
+                });
+                ps.stderr.on('data', function (data) {
+                    dataController.addMessage({
+                        message: data.toString('utf-8')
+                    });
+                });
+                // TO DO: session.io?
+                res.json({
+                    message: 'Started'
                 });
             });
             // TO DO: session.io?
             res.json({
-                message: 'started'
+                message: 'Already started'
             });
-        });
+        }
     },
     end: function (res) {
         if (readerStarted) {
