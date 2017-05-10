@@ -91,8 +91,9 @@ var dataController = {
                 console.log('err: ', err);
             }
             if (callback) {
-                callback();
+                return callback();
             }
+            return true;
         });
     }
 };

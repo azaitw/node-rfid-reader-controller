@@ -17,19 +17,26 @@ var readerController = {
 
         ps = childProcess.spawn('java', properties);
         dataController.init(function () {
+            ps.stdin.setEncoding('utf-8');
+            ps.stdin.write('STATUS\n');
             ps.stdout.on('data', function (data) {
                 var raw = data.toString('utf-8');
 
-                if (raw[0] === '{') {
+                try {
                     dataController.add(JSON.parse(raw));
+                } catch (e) {
+                    dataController.addError({
+                        message: 'JSON parse error'
+                        data: raw
+                    });
                 }
             });
             ps.stderr.on('data', function (data) {
                 dataController.addError({
-                    message: data.toString('utf-8').trim()
+                    message: data.toString('utf-8')
                 });
             });
-            // TO DO: session.io
+            // TO DO: session.io?
             res.json({
                 message: 'started'
             });
