@@ -3,8 +3,13 @@
 'use strict';
 
 var childProcess = require('child_process');
+var fileController = require('./fileController');
+var jsonfile = require('jsonfile');
 var ps;
-var readerController = {
+var readerController;
+
+jsonfile.spaces = 4;
+readerController = {
     start: function (res) {
         var readerIp = global.config.connections.reader;
         var properties = [
@@ -15,17 +20,24 @@ var readerController = {
         ];
 
         ps = childProcess.spawn('java', properties);
-        ps.stdout.on('data', function (data) {
-            console.log(data.toString('utf-8'));
-        });
-        ps.stderr.on('data', function (data) {
-            console.log('Error: ', data.toString().trim());
-        });
-        ps.stdout.on('close', function () {
-            console.log('Disconnected.');
-        });
-        res.json({
-            message: 'started'
+        fileController.init(function () {
+            ps.stdout.on('data', function (data) {
+                var raw = data.toString('utf-8');
+
+                if (raw[0] === '{') {
+                    console.log('to add');
+                    fileController.add(JSON.parse(raw));
+                }
+            });
+            ps.stderr.on('data', function (data) {
+                console.log('Error: ', data.toString().trim());
+            });
+            ps.stdout.on('close', function () {
+                console.log('Disconnected.');
+            });
+            res.json({
+                message: 'started'
+            });
         });
     },
     end: function (res) {
@@ -33,6 +45,7 @@ var readerController = {
             ps.stdin.setEncoding('utf-8');
             ps.stdin.write('STOP\n');
             ps.stdin.end();
+            fileController.end();
         }
         res.json({
             message: 'stopped'

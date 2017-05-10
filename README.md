@@ -14,6 +14,6 @@ Node.js為基礎的 Impinj Speedway R420 讀卡機控制器。
 
 路徑 (http get)
 ====================
-開始    /api/start
-結束    /api/end
+- 開始    /api/start
+- 結束    /api/end
 
