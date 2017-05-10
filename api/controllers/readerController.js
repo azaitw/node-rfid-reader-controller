@@ -10,7 +10,7 @@ var readerController = {
     start: function (res) {
         var readerIp = global.config.connections.reader;
         var properties = [
-            '-Dlog4j.configuration=file:logs/log4j.properties',
+            '-Dlog4j.configuration=file:env-config/log4j.properties',
             '-Dhostname=' + readerIp,
             '-jar',
             'node_modules/impinjCtrl/out/impinjCtrl.jar'
