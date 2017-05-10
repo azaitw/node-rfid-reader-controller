@@ -2,9 +2,24 @@
 
 'use strict';
 
+/*  Writes a log file with the following format:
+    {
+        duration: {
+            start: {
+                date:
+                time:
+            },
+            end: {
+                date:
+                time:
+            }
+        },
+        records: [],
+        errors: []
+    }
+*/
+
 var fileContentObj;
-var fileController;
-var fileLoggerPath;
 var fs = require('fs');
 var fstorm = require('fstorm');
 var returnTimeObj = function () {
@@ -22,24 +37,7 @@ var returnTimeObj = function () {
 };
 var stringify = require('fast-stable-stringify');
 var writer;
-
-/*  Writes a log file with the following format:
-    {
-        duration: {
-            start: {
-                date:
-                time:
-            },
-            end: {
-                date:
-                time:
-            }
-        },
-        records: [],
-        errors: []
-    }
-*/
-fileController = {
+var fileController = {
     init: function (callback) {
         var timeObj = returnTimeObj();
         var returnFilepath = function (callback) {
@@ -63,43 +61,37 @@ fileController = {
                 start: timeObj
             };
 
-            fileLoggerPath = filepath;
-            writer = fstorm(fileLoggerPath);
+            writer = fstorm(filepath);
             fileContentObj = {
                 duration: startTime,
                 records: [],
                 errors: []
             };
-            writer.write(stringify(fileContentObj), function (err) {
-                if (err) {
-                    console.log('err: ', err);
-                }
-                callback();
-            });
+            fileController.writeFile(fileContentObj, callback);
         });
     },
     add: function (entry) {
         fileContentObj.records.push(entry);
-        writer.write(stringify(fileContentObj), function (err) {
-            if (err) {
-                console.log('err: ', err);
-            }
-        });
+        fileController.writeFile(fileContentObj);
     },
     end: function () {
         fileContentObj.duration.end = returnTimeObj();
-        writer.write(stringify(fileContentObj), function (err) {
+        fileController.writeFile(fileContentObj);
+    },
+    addError: function (entry) {
+        var err = entry;
+
+        err.timestamp = returnTimeObj;
+        fileContentObj.errors.push(err);
+        fileController.writeFile(fileContentObj);
+    },
+    writeFile: function (obj, callback) {
+        writer.write(stringify(obj), function (err) {
             if (err) {
                 console.log('err: ', err);
             }
-        });
-    },
-    addError: function (entry) {
-        entry.timestamp = returnTimeObj;
-        fileContentObj.errors.push(entry);
-        writer.write(stringify(fileContentObj), function (err) {
-            if (err) {
-                console.log('err: ', err);
+            if (callback) {
+                callback();
             }
         });
     }
