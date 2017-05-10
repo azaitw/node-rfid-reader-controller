@@ -5,6 +5,7 @@
 var childProcess = require('child_process');
 var dataController = require('./dataController');
 var ps;
+var readerStarted;
 var readerController = {
     start: function (res) {
         var readerIp = global.config.connections.reader;
@@ -16,19 +17,29 @@ var readerController = {
         ];
 
         ps = childProcess.spawn('java', properties);
+        readerStarted = true;
         dataController.init(function () {
             ps.stdin.setEncoding('utf-8');
             ps.stdin.write('STATUS\n');
             ps.stdout.on('data', function (data) {
                 var raw = data.toString('utf-8');
+                var epcIndex = 5;
+                var func;
 
-                try {
-                    dataController.add(JSON.parse(raw));
-                } catch (e) {
-                    dataController.addError({
-                        message: 'JSON parse error'
-                        data: raw
-                    });
+                if (raw[0] === '{') {
+                    if (raw.substring(0, epcIndex) === '{"epc') {
+                        func = dataController.add;
+                    } else {
+                        func = dataController.addMessage;
+                    }
+                    try {
+                        func(JSON.parse(raw));
+                    } catch (e) {
+                        dataController.addMessage({
+                            message: 'JSON parse error',
+                            data: raw
+                        });
+                    }
                 }
             });
             ps.stderr.on('data', function (data) {
@@ -43,7 +54,8 @@ var readerController = {
         });
     },
     end: function (res) {
-        if (ps) {
+        if (readerStarted) {
+            readerStarted = false;
             ps.stdin.setEncoding('utf-8');
             ps.stdin.write('STOP\n');
             ps.stdin.end();

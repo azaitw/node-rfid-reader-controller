@@ -65,7 +65,7 @@ var dataController = {
             dataObj = {
                 duration: startTime,
                 records: [],
-                errors: []
+                messages: []
             };
             dataController.writeFile(dataObj, callback);
         });
@@ -78,11 +78,11 @@ var dataController = {
         dataObj.duration.end = returnTimeObj();
         dataController.writeFile(dataObj);
     },
-    addError: function (entry) {
+    addMessage: function (entry) {
         var err = entry;
 
-        err.timestamp = returnTimeObj;
-        dataObj.errors.push(err);
+        err.timestamp = returnTimeObj();
+        dataObj.messages.push(err);
         dataController.writeFile(dataObj);
     },
     writeFile: function (obj, callback) {
