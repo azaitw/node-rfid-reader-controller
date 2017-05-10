@@ -11,7 +11,7 @@ var configs = {
     connections: {
         reader: '192.168.0.100'
     },
-    fileLoggerPath: '/media/pi/STICKY/logs',
+    fileLoggerPath: '/media/pi/STICKY/logs/',
     port: 80
 };
 

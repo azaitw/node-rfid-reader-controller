@@ -19,7 +19,7 @@ var readerController = {
         if (!readerStarted) {
             readerStarted = true;
             ps = childProcess.spawn('java', properties);
-            dataController.init(function () {
+            return dataController.init(function () {
                 ps.stdin.setEncoding('utf-8');
                 ps.stdin.write('STATUS\n');
                 ps.stdout.on('data', function (data) {
@@ -49,15 +49,15 @@ var readerController = {
                     });
                 });
                 // TO DO: session.io?
-                res.json({
+                return res.json({
                     message: 'Started'
                 });
             });
-            // TO DO: session.io?
-            res.json({
-                message: 'Already started'
-            });
         }
+        // TO DO: session.io?
+        return res.json({
+            message: 'Already started'
+        });
     },
     end: function (res) {
         if (readerStarted) {
@@ -66,9 +66,12 @@ var readerController = {
             ps.stdin.write('STOP\n');
             ps.stdin.end();
             dataController.end();
+            return res.json({
+                message: 'stopped'
+            });
         }
-        res.json({
-            message: 'stopped'
+        return res.json({
+            message: 'No active reader'
         });
     }
 };
