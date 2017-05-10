@@ -10,4 +10,10 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     configFile = require('./env-config/development');
 }
+if (typeof process.env.READER_ADDRESS !== 'undefined') {
+    configs.connections.reader = process.env.READER_ADDRESS;
+}
+if (typeof process.env.LOG_PATH !== 'undefined') {
+    configs.fileLoggerPath = process.env.LOG_PATH;
+}
 module.exports = configFile;

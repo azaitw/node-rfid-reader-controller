@@ -15,10 +15,4 @@ var configs = {
     port: 80
 };
 
-if (typeof process.env.READER_ADDRESS !== 'undefined') {
-    configs.connections.reader = process.env.READER_ADDRESS;
-}
-if (typeof process.env.LOG_PATH !== 'undefined') {
-    configs.fileLoggerPath = process.env.LOG_PATH;
-}
 module.exports = configs;
