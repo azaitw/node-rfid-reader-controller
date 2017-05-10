@@ -14,23 +14,16 @@ var returnTimeObj = function () {
         return ('0' + input).slice(sliceIndex);
     };
     var date = new Date();
-    var year = date.getFullYear();
-    var month = apendZero(date.getMonth());
-    var day = apendZero(date.getDate());
-    var hour = apendZero(date.getHours());
-    var min = apendZero(date.getMinutes());
-    var sec = apendZero(date.getSeconds());
 
     return {
-        date: year + '-' + month + '-' + day,
-        time: hour + ':' + min + ':' + sec
+        date: date.getFullYear() + '-' + apendZero(date.getMonth()) + '-' + apendZero(date.getDate()),
+        time: apendZero(date.getHours()) + ':' + apendZero(date.getMinutes()) + ':' + apendZero(date.getSeconds())
     };
 };
 var stringify = require('fast-stable-stringify');
 var writer;
 
-/*
-    Writes a log file with the following format:
+/*  Writes a log file with the following format:
     {
         duration: {
             start: {
@@ -42,7 +35,8 @@ var writer;
                 time:
             }
         },
-        records: []
+        records: [],
+        errors: []
     }
 */
 fileController = {
@@ -73,7 +67,8 @@ fileController = {
             writer = fstorm(fileLoggerPath);
             fileContentObj = {
                 duration: startTime,
-                records: []
+                records: [],
+                errors: []
             };
             writer.write(stringify(fileContentObj), function (err) {
                 if (err) {
@@ -93,6 +88,15 @@ fileController = {
     },
     end: function () {
         fileContentObj.duration.end = returnTimeObj();
+        writer.write(stringify(fileContentObj), function (err) {
+            if (err) {
+                console.log('err: ', err);
+            }
+        });
+    },
+    addError: function (entry) {
+        entry.timestamp = returnTimeObj;
+        fileContentObj.errors.push(entry);
         writer.write(stringify(fileContentObj), function (err) {
             if (err) {
                 console.log('err: ', err);

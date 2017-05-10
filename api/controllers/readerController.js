@@ -21,16 +21,15 @@ var readerController = {
                 var raw = data.toString('utf-8');
 
                 if (raw[0] === '{') {
-                    console.log('to add');
                     fileController.add(JSON.parse(raw));
                 }
             });
             ps.stderr.on('data', function (data) {
-                console.log('Error: ', data.toString().trim());
+                fileController.addError({
+                    message: data.toString('utf-8').trim()
+                });
             });
-            ps.stdout.on('close', function () {
-                console.log('Disconnected.');
-            });
+            // TO DO: session.io
             res.json({
                 message: 'started'
             });
