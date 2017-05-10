@@ -4,12 +4,8 @@
 
 var childProcess = require('child_process');
 var fileController = require('./fileController');
-var jsonfile = require('jsonfile');
 var ps;
-var readerController;
-
-jsonfile.spaces = 4;
-readerController = {
+var readerController = {
     start: function (res) {
         var readerIp = global.config.connections.reader;
         var properties = [

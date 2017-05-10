@@ -1,4 +1,4 @@
-/* eslint-disable no-console, no-sync */
+/* eslint-disable no-console, no-param-reassign, no-sync */
 
 'use strict';
 
@@ -52,12 +52,11 @@ fileController = {
             var index = 1;
             var filenameBase = timeObj.date + '_session-';
             var checker = function (index) {
-                var currentIndex = index;
                 var filePath = global.config.fileLoggerPath + filenameBase + index + '.json';
 
                 if (fs.existsSync(filePath)) {
-                    currentIndex += 1;
-                    return checker(currentIndex);
+                    index += 1;
+                    return checker(index);
                 }
                 return callback(filePath);
             };
