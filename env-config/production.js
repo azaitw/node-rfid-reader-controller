@@ -8,6 +8,7 @@
     LOG_PATH: Log file path
 */
 var configs = {
+    env: 'production',
     connections: {
         reader: '192.168.0.100'
     },

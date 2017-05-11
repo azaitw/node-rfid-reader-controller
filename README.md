@@ -17,3 +17,14 @@ Node.js為基礎的 Impinj Speedway R420 讀卡機控制器。
 - 開始    /api/start
 - 結束    /api/end
 
+設定 Raspberry Pi
+====================
+- 安裝OS
+    https://www.raspberrypi.org/documentation/installation/installing-images/README.md
+- 安裝 Node.js & NPM
+- 安裝 Java
+- 優化
+    -- https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=61033
+
+- 安裝 RPI-Monitor (http://IP-ADDRESS:8888)
+    -- http://rpi-experiences.blogspot.tw/
