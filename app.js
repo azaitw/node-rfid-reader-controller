@@ -23,15 +23,10 @@ app.use('/api', router);
 app.listen(port);
 console.log('RFID reader controller started');
 console.log('===================================================');
-require('dns').lookup(require('os').hostname(), function (err, addr, fam) {
-
-});
 
 Object.keys(ifaces).forEach(function (ifname) {
-    var alias = 0;
-
     ifaces[ifname].forEach(function (iface) {
-        if ('IPv4' !== iface.family || iface.internal !== false) {
+        if (iface.family !== 'IPv4' || iface.internal !== false) {
             return;
         }
         console.log('- Start reader: http://' + iface.address + ':' + port + '/api/start');
