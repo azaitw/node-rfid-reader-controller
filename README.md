@@ -17,6 +17,15 @@ Node.js為基礎的 Impinj Speedway R420 讀卡機控制器。
 - 開始    /api/start
 - 結束    /api/end
 
+Logging
+====================
+系統會依照config裡設定的路徑儲存讀卡紀錄。
+To-do: 用array的方式依序選擇可用的路徑
+
+App 管理 (PM2)
+====================
+To-do
+
 設定 Raspberry Pi
 ====================
 - 安裝OS
