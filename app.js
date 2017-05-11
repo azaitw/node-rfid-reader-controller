@@ -31,12 +31,12 @@ Object.keys(ifaces).forEach(function (ifname) {
     var alias = 0;
 
     ifaces[ifname].forEach(function (iface) {
-    if ('IPv4' !== iface.family || iface.internal !== false) {
-        return;
-    }
-    console.log('- Start reader: http://' + iface.address + ':' + port + '/api/start');
-    console.log('- End reader:   http://' + iface.address + ':' + port + '/api/end');
-    console.log('- Log file:    ', global.config.fileLoggerPath);
-    console.log('===================================================');
+        if ('IPv4' !== iface.family || iface.internal !== false) {
+            return;
+        }
+        console.log('- Start reader: http://' + iface.address + ':' + port + '/api/start');
+        console.log('- End reader:   http://' + iface.address + ':' + port + '/api/end');
+        console.log('- Log file:    ', global.config.fileLoggerPath);
+        console.log('===================================================');
     });
 });
