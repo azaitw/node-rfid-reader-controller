@@ -2,6 +2,25 @@
 
 Node.js為基礎的 Impinj Speedway R420 讀卡機控制器。
 
+系統架構
+====================
+Impinj reader
+  |
+  |
+(java)
+  |
+  |
+node-rfid-reader-controller (Raspberry pi)
+  |
+(node.js)
+  |
+  |- Local log (USB drive)
+  |
+  |- Beardude_event: Local server (Windows tablet)
+  |
+  |- Beardude_event: Remote server (public site)
+
+
 功能
 ====================
 1. 開始/結束讀卡機的動作
